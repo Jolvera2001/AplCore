@@ -1,8 +1,11 @@
+use actix_web::{get, App, HttpResponse, HttpServer, Responder };
+use actix_web::web::get;
+
 mod database;
 mod endpoints;
 mod models;
 
-use actix_web::{get, App, HttpResponse, HttpServer, Responder };
+use endpoints::{ add_user, edit_user, get_user, delete_user };
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -12,8 +15,12 @@ async fn hello() -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| App::new()
-        .service(hello))
-        .bind(("localhost", 8080))?
-        .run()
-        .await
+    .service(hello)
+    .service(add_user)
+    .service(get_user)
+    .service(edit_user)
+    .service(delete_user))
+    .bind(("localhost", 8080))?
+    .run()
+    .await
 }
