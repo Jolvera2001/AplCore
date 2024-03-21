@@ -1,4 +1,6 @@
 mod database;
+mod endpoints;
+mod models;
 
 use actix_web::{get, App, HttpResponse, HttpServer, Responder };
 
