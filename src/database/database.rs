@@ -22,12 +22,12 @@ impl MongoRepo {
         MongoRepo { col }
     }
 
-    pub async fn create_use(&self, new_user: User) -> Result<InsertOneResult, Error> {
+    pub async fn create_user(&self, new_user: User) -> Result<InsertOneResult, Error> {
         let new_doc = User {
             id: None,
             name: new_user.name,
-            location: new_user.location,
-            title: new_user.title,
+            password: new_user.password,
+            age: new_user.age
         };
         let user = self
             .col
