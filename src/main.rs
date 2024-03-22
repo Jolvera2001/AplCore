@@ -6,6 +6,7 @@ mod endpoints;
 mod models;
 
 use endpoints::{ add_user, edit_user, get_user, delete_user };
+use database::MongoRepo;
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -14,13 +15,17 @@ async fn hello() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new()
-    .service(hello)
-    .service(add_user)
-    .service(get_user)
-    .service(edit_user)
-    .service(delete_user))
-    .bind(("localhost", 8080))?
-    .run()
-    .await
+    let db = MongoRepo::init().await;
+    let db_data = Data::new(db);
+
+    HttpServer::new(move || App::new()
+        .app_data(db_data.clone())
+        .service(hello)
+        .service(add_user)
+        .service(get_user)
+        .service(edit_user)
+        .service(delete_user))
+        .bind(("localhost", 8080))?
+        .run()
+        .await
 }
