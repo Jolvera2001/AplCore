@@ -1,4 +1,4 @@
-use actix_web::{Responder, get, post, patch, delete, HttpResponse, web::Path };
+use actix_web::{Responder, get, post, patch, delete, HttpResponse, web::Path, web::Json };
 use crate::models::user_model::User;
 
 #[get("user/{id}")]
@@ -7,7 +7,7 @@ async fn get_user(id: Path<User>) -> impl Responder {
 }
 
 #[post("user/add")]
-async fn add_user(new_user: User) -> impl Responder {
+async fn add_user(new_user: Json<User>) -> impl Responder {
     HttpResponse::Ok().body("Not Implemented")
 }
 

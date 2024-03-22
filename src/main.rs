@@ -1,4 +1,4 @@
-use actix_web::{get, App, HttpResponse, HttpServer, Responder };
+use actix_web::{get, App, HttpResponse, HttpServer, Responder, web::Data };
 use actix_web::web::get;
 
 mod database;

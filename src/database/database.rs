@@ -16,7 +16,7 @@ impl MongoRepo {
             Ok(v) => v.to_string(),
             Err(_) => format!("Error loading env variable"),
         };
-        let client = Client::with_uri_str(uri).unwrap();
+        let client = Client::with_uri_str(uri).await.unwrap();
         let db = client.database("AplCoreMain");
         let col: Collection<User> = db.collection("Users");
         MongoRepo { col }
