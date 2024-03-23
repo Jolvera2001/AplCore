@@ -27,8 +27,8 @@ impl MongoRepo {
     pub async fn create_user(&self, new_user: User) -> Result<InsertOneResult, Error> {
         let new_doc = User {
             id: None,
-            name: new_user.name,
-            password: new_user.password,
+            name: new_user.name.clone(),
+            password: new_user.password.clone(),
             age: new_user.age
         };
         let user = self
@@ -40,8 +40,8 @@ impl MongoRepo {
         Ok(user)
     }
 
-    pub async fn get_user(&self, id: String) -> Result<User, Error> {
-        let obj_id = ObjectId::parse_str(id).unwrap();
+    pub async fn get_user(&self, id: String) -> Result<Option<User>, Error> {
+        let obj_id = ObjectId::parse_str(&id)?;
         let query = doc! { "_id": obj_id };
         let user = self
             .col
@@ -49,11 +49,11 @@ impl MongoRepo {
             .await
             .ok()
             .expect("Error getting user");
-        Ok(user.unwrap())
+        Ok(user)
     }
 
     pub async fn edit_user(&self, updated_user: User, id: String) -> Result<UpdateResult, Error> {
-        let obj_id = ObjectId::parse_str(id).unwrap();
+        let obj_id = ObjectId::parse_str(&id)?;
         let filter = doc! {"_id": obj_id };
         let new_doc = doc! {
             "$set": {
