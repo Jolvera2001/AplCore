@@ -49,7 +49,7 @@ impl MongoRepo {
             .await
             .ok()
             .expect("Error getting user");
-        Ok(user)
+       Ok(user)
     }
 
     pub async fn edit_user(&self, updated_user: User, id: String) -> Result<UpdateResult, Error> {
