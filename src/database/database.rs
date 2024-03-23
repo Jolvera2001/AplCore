@@ -1,7 +1,9 @@
-use mongodb::{ bson::{ extjson::de::Error }, results::{ InsertOneResult }, Client, Collection, };
+use mongodb::{ bson::{ extjson::de::Error }, results::{ InsertOneResult }, Client, Collection, bson::doc };
 use std::env;
 extern crate dotenv;
 use dotenv::dotenv;
+use mongodb::bson::oid::ObjectId;
+use mongodb::results::{DeleteResult, UpdateResult};
 
 use crate::models::user_model::User;
 
@@ -36,5 +38,50 @@ impl MongoRepo {
             .ok()
             .expect("Error creating user");
         Ok(user)
+    }
+
+    pub async fn get_user(&self, id: String) -> Result<User, Error> {
+        let obj_id = ObjectId::parse_str(id).unwrap();
+        let query = doc! { "_id": obj_id };
+        let user = self
+            .col
+            .find_one(query, None)
+            .await
+            .ok()
+            .expect("Error getting user");
+        Ok(user.unwrap())
+    }
+
+    pub async fn edit_user(&self, updated_user: User, id: String) -> Result<UpdateResult, Error> {
+        let obj_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! {"_id": obj_id };
+        let new_doc = doc! {
+            "$set": {
+                "id": updated_user.id,
+                "name": updated_user.name,
+                "password": updated_user.password,
+                "age": updated_user.age
+            },
+        };
+        let updated_doc = self
+            .col
+            .update_one(filter, new_doc, None)
+            .await
+            .ok()
+            .expect("Error updating user");
+        Ok(updated_doc)
+    }
+
+    pub async fn delete_user(&self, user_id: String) -> Result<DeleteResult, Error> {
+        let id = ObjectId::parse_str(user_id).unwrap();
+        let query = doc! {"_id": id };
+
+        let user_detail = self
+            .col
+            .delete_one(query, None)
+            .await
+            .ok()
+            .expect("Error deleting User");
+        Ok(user_detail)
     }
 }
