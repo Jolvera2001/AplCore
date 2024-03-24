@@ -27,6 +27,7 @@ impl MongoRepo {
     pub async fn create_user(&self, new_user: User) -> Result<InsertOneResult, Error> {
         let new_doc = User {
             id: None,
+            role: new_user.role.clone(),
             name: new_user.name.clone(),
             password: new_user.password.clone(),
             age: new_user.age
