@@ -16,8 +16,9 @@ pub async fn get_user(id: Path<String>, db: Data<MongoRepo>) -> impl Responder {
 
 #[post("/user/add")]
 pub async fn add_user(new_user: Json<User>, db: Data<MongoRepo>) -> impl Responder {
-    let user = User {
+    let user: User = User {
         id: None,
+        role: new_user.role.to_owned(),
         name: new_user.name.to_owned(),
         password: new_user.password.to_owned(),
         age: new_user.age.to_owned(),
@@ -31,8 +32,9 @@ pub async fn add_user(new_user: Json<User>, db: Data<MongoRepo>) -> impl Respond
 
 #[put("/user/edit/{id}")]
 pub async fn edit_user(id: Path<String>, new_user: Json<User>, db: Data<MongoRepo>) -> impl Responder {
-    let user = User {
-        id: Some(ObjectId::parse_str(id.clone()).unwrap()),
+    let user: User = User {
+        id: None,
+        role: new_user.role.to_owned(),
         name: new_user.name.to_owned(),
         password: new_user.password.to_owned(),
         age: new_user.age.to_owned(),
