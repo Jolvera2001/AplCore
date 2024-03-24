@@ -1,14 +1,17 @@
 use mongodb::{ bson::{ extjson::de::Error }, results::{ InsertOneResult }, Client, Collection, bson::doc };
 use std::env;
+use actix_web::App;
+
 extern crate dotenv;
 use dotenv::dotenv;
 use mongodb::bson::oid::ObjectId;
 use mongodb::results::{DeleteResult, UpdateResult};
 
-use crate::models::user_model::User;
+use crate::models::{ User, Application };
 
 pub struct MongoRepo {
-    col: Collection<User>,
+    users_col: Collection<User>,
+    applications_col: Collection<Application>,
 }
 
 impl MongoRepo {
@@ -20,8 +23,9 @@ impl MongoRepo {
         };
         let client = Client::with_uri_str(uri).await.unwrap();
         let db = client.database("AplCoreMain");
-        let col: Collection<User> = db.collection("Users");
-        MongoRepo { col }
+        let users_col: Collection<User> = db.collection("Users");
+        let applications_col: Collection<Application> = db.collection("Applications");
+        MongoRepo { users_col, applications_col }
     }
 
     pub async fn create_user(&self, new_user: User) -> Result<InsertOneResult, Error> {
@@ -32,8 +36,9 @@ impl MongoRepo {
             password: new_user.password.clone(),
             age: new_user.age
         };
+
         let user = self
-            .col
+            .users_col
             .insert_one(new_doc, None)
             .await
             .ok()
@@ -45,9 +50,10 @@ impl MongoRepo {
         let obj_id = ObjectId::parse_str(&id)?;
         let query = doc! { "_id": obj_id };
         let user = self
-            .col
+            .users_col
             .find_one(query, None)
             .await
+            .ok()
             .expect("Error getting user");
         Ok(user)
     }
@@ -64,7 +70,7 @@ impl MongoRepo {
             },
         };
         let updated_doc = self
-            .col
+            .users_col
             .update_one(filter, new_doc, None)
             .await
             .ok()
@@ -77,11 +83,45 @@ impl MongoRepo {
         let query = doc! {"_id": id };
 
         let user_detail = self
-            .col
+            .users_col
             .delete_one(query, None)
             .await
             .ok()
             .expect("Error deleting User");
         Ok(user_detail)
+    }
+
+    pub async fn get_user_applications(&self, user_id: String) -> Result<Vec<Application>, Error> {
+        let id = ObjectId::parse_str(user_id).unwrap();
+        let query = doc! {"user_id": id };
+
+        let find_detail = self
+            .applications_col
+            .find(query, None)
+            .await
+            .ok()
+            .expect("Error getting user applications");
+        let app_vec: Vec<Application> = find_detail.collect().await;
+        Ok(app_vec)
+    }
+
+    pub async fn add_application(&self, new_app: Application) -> Result<InsertOneResult, Error> {
+        let new_doc = Application {
+            id: None,
+            user_id: new_app.user_id.clone(),
+            title: new_app.title.clone(),
+            description: new_app.description.clone(),
+            status: new_app.status.clone(),
+            is_closed: new_app.is_closed,
+            company: new_app.company.clone(),
+        };
+
+        let insert_detail = self
+            .applications_col
+            .insert_one(new_doc, None)
+            .await
+            .ok()
+            .expect("Error adding application");
+        Ok(insert_detail)
     }
 }
