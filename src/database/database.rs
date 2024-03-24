@@ -1,6 +1,6 @@
 use mongodb::{ bson::{ extjson::de::Error }, results::{ InsertOneResult }, Client, Collection, bson::doc };
 use std::env;
-use actix_web::App;
+
 
 extern crate dotenv;
 use dotenv::dotenv;
@@ -123,5 +123,42 @@ impl MongoRepo {
             .ok()
             .expect("Error adding application");
         Ok(insert_detail)
+    }
+
+    pub async fn edit_application(&self, new_app: Application, app_id: String) -> Result<UpdateResult, Error> {
+        let obj_id = ObjectId::parse_str(&app_id)?;
+        let filter = doc! {"_id": obj_id };
+        let new_doc = doc! {
+            "$set": {
+                "id": new_app.id,
+                "user_id": new_app.user_id,
+                "title": new_app.title,
+                "description": new_app.description,
+                "status": new_app.status,
+                "is_closed": new_app.is_closed,
+                "company": new_app.company,
+            },
+        };
+
+        let update_detail = self
+            .applications_col
+            .update_one(filter, new_doc, None)
+            .await
+            .ok()
+            .expect("Error updating application");
+        Ok(update_detail)
+    }
+
+    pub async fn delete_application(&self, app_id: String) -> Result<DeleteResult, Error> {
+        let obj_id = ObjectId::parse_str(&app_id)?;
+        let query = doc! {"_id": obj_id };
+
+        let delete_detail = self
+            .applications_col
+            .delete_one(query, None)
+            .await
+            .ok()
+            .expect("Error deleting application");
+        Ok(delete_detail)
     }
 }
