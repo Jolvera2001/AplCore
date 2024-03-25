@@ -1,6 +1,6 @@
 use mongodb::{ bson::{ extjson::de::Error }, results::{ InsertOneResult }, Client, Collection, bson::doc };
+use futures::stream::{ TryStreamExt };
 use std::env;
-
 
 extern crate dotenv;
 use dotenv::dotenv;
@@ -101,7 +101,14 @@ impl MongoRepo {
             .await
             .ok()
             .expect("Error getting user applications");
-        let app_vec: Vec<Application> = find_detail.collect().await;
+
+        // TryStream uses try_collect() and collects into a Result<Vec<T>>
+        // let v: Vec<_> = cursor.try_collect().await?;
+        let app_vec: Vec<Application> = find_detail
+            .try_collect()
+            .await
+            .ok()
+            .expect("Error getting user applications");
         Ok(app_vec)
     }
 

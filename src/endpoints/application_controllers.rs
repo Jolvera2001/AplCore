@@ -24,7 +24,7 @@ pub async fn get_one_application(app_id: Path<String>, db: Data<MongoRepo>) -> i
 
 #[post("/application/add")]
 pub async fn add_application(new_application: Json<Application>, db: Data<MongoRepo>) -> impl Responder {
-    let application: Application = json_to_application(new_application);
+    let application: Application = json_to_application(new_application).await;
     let application_detail = db.add_application(application).await;
     match application_detail {
         Ok(application) => HttpResponse::Ok().json(application),
@@ -34,7 +34,7 @@ pub async fn add_application(new_application: Json<Application>, db: Data<MongoR
 
 #[put("/application/edit/{id}")]
 pub async fn edit_application(id: Path<String>, new_application: Json<Application>, db: Data<MongoRepo>) -> impl Responder {
-    let application: Application = json_to_application(new_application);
+    let application: Application = json_to_application(new_application).await;
     let obj_id: String = id.into_inner();
     let update_result = db.edit_application(application, obj_id).await;
     match update_result {
