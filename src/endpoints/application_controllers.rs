@@ -13,7 +13,7 @@ pub async fn get_applications(user_id: Path<String>, db: Data<MongoRepo>) -> imp
 }
 
 #[get("/application/single/{app_id}")]
-pub async fn get_application(app_id: Path<String>, db: Data<MongoRepo>) -> impl Responder {
+pub async fn get_one_application(app_id: Path<String>, db: Data<MongoRepo>) -> impl Responder {
     let obj_id = app_id.into_inner();
     let application_detail = db.get_one_user_application(obj_id).await;
     match application_detail {
