@@ -105,6 +105,18 @@ impl MongoRepo {
         Ok(app_vec)
     }
 
+    pub async fn get_one_user_application(&self, app_id: String) -> Result<Option<Application>, Error> {
+        let obj_id = ObjectId::parse_str(&app_id)?;
+        let query = doc! { "_id": obj_id };
+        let app_detail = self
+            .applications_col
+            .find_one(query, None)
+            .await
+            .ok()
+            .expect("Error getting application");
+        Ok(app_detail)
+    }
+
     pub async fn add_application(&self, new_app: Application) -> Result<InsertOneResult, Error> {
         let new_doc = Application {
             id: None,
