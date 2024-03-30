@@ -1,4 +1,5 @@
 use actix_web::{get, App, HttpResponse, HttpServer, Responder, web::Data };
+use actix_cors::Cors;
 
 mod database;
 mod endpoints;
@@ -28,7 +29,9 @@ async fn main() -> std::io::Result<()> {
     let db = MongoRepo::init().await;
     let db_data = Data::new(db);
 
-    HttpServer::new(move || App::new()
+    HttpServer::new(move || 
+        App::new()
+        .wrap(Cors::default().allowed_origin("http://localhost:5173"))
         .app_data(db_data.clone())
         .service(hello)
         .service(add_user)
