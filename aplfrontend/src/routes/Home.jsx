@@ -5,7 +5,12 @@ import {
     Card,
     CardHeader,
     CardFooter,
-    CardBody
+    CardBody,
+    Heading,
+    Divider,
+    Text,
+    Button,
+    HStack
 } from '@chakra-ui/react'
 
 function Home() {
@@ -18,10 +23,29 @@ function Home() {
     }, []);
 
     return (
-        <div>
-            <h1>Home</h1>
-            <p>Welcome to the home page</p>
-        </div>
+        <Container>
+            <Box>
+                {data.map((apl, index) => (
+                    <Card key={index}>
+                        <CardHeader>
+                            <Heading size='md'>{apl.title}</Heading>
+                            <Text>{apl.is_closed ? "Closed" : "Not Closed"}</Text>
+                            <Text>{apl.company}</Text>
+                        </CardHeader>
+                        <CardBody>
+                            <Text>{apl.description}</Text>
+                            <Text>{apl.status}</Text>
+                        </CardBody>
+                        <CardFooter>
+                            <HStack spacing={2.5}>
+                                <Button>Update</Button>
+                                <Button>Delete</Button>
+                            </HStack>
+                        </CardFooter>
+                    </Card>
+                ))}
+            </Box>
+        </Container>
     )
 }
 
