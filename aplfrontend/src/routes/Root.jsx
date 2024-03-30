@@ -13,6 +13,11 @@ import {
   Button,
   Stack,
   Link as ChakraLink,
+  Flex,
+  Spacer,
+  Heading,
+  HStack,
+
 } from "@chakra-ui/react";
 import { Outlet, Link as ReactRouterLink } from 'react-router-dom';
 
@@ -25,7 +30,7 @@ function Root() {
     <>
       <Drawer
       isOpen={isOpen}
-      placement='left'
+      placement='right'
       onClose={onClose}
       finalFocusRef={btnRef}>
         <DrawerOverlay />
@@ -45,9 +50,15 @@ function Root() {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-      <Box w='100%' p={5} color='white'>
-        <Button ref={btnRef} onClick={onOpen} leftIcon={<GiHamburgerMenu />}>Menu</Button>
-      </Box>
+      <Flex>
+        <Box w='100%' p={5} bg='tomato' padding={4}>
+          <HStack>
+            <Heading size='lg'>AplCore</Heading>
+            <Spacer />
+            <Button ref={btnRef} onClick={onOpen} leftIcon={<GiHamburgerMenu />}>Menu</Button>
+          </HStack>
+        </Box>
+      </Flex>
       <Box>
         <Outlet />
       </Box>
