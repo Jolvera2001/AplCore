@@ -17,8 +17,11 @@ import {
   Spacer,
   Heading,
   HStack,
+  Icon,
+
 
 } from "@chakra-ui/react";
+import AplCoreLogo from '../assets/AplCoreLogo.svg'
 import { Outlet, Link as ReactRouterLink } from 'react-router-dom';
 
 function Root() {
@@ -51,8 +54,9 @@ function Root() {
         </DrawerContent>
       </Drawer>
       <Flex>
-        <Box w='100%' p={5} bg='tomato' padding={4}>
+        <Box w='100%' p={5} padding={4} borderBottom='1px' borderColor='black' bg="tomato">
           <HStack>
+            <img src={AplCoreLogo} style={{width: "3.75%"}} />
             <Heading size='lg'>AplCore</Heading>
             <Spacer />
             <Button ref={btnRef} onClick={onOpen} leftIcon={<GiHamburgerMenu />}>Menu</Button>

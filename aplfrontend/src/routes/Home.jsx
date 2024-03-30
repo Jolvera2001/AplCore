@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
+    useDisclosure,
     Container,
     Box,
     Card,
@@ -12,13 +13,20 @@ import {
     Text,
     Button,
     HStack,
-    Icon,
     Avatar,
     AvatarBadge,
     Badge,
     Center,
     Flex,
     Spacer,
+    Spinner,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
 
 } from '@chakra-ui/react'
 import { FaCheck, FaBan } from "react-icons/fa6"
@@ -26,6 +34,7 @@ import { FaCheck, FaBan } from "react-icons/fa6"
 function Home() {
     const [data, setData] = useState([]); // empty list
     const [editing, setEditing] = useState();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     useEffect(() => {
         fetch('http://localhost:8080/application/6600ed08f2a198fc24d51273')
@@ -58,10 +67,14 @@ function Home() {
     }
 
     return (
+        <>
             <Flex mt={10} mx={7} >
                 <Box w="40%" overflow="auto" maxHeight="80vh">
                     <Stack spacing={2.5} >
-                        {data.map((apl, index) => (
+                        <HStack>
+                            <Button onClick={onOpen}>Add Aplication</Button>
+                        </HStack>
+                        {data ? data.map((apl, index) => (
                             <Card key={index} size='sm' onClick={editItem}>
                                 <CardHeader>
                                     <HStack>
@@ -82,7 +95,7 @@ function Home() {
                                     </HStack>
                                 </CardFooter>
                             </Card>
-                        ))}
+                        )) : <Spinner size='lg' />}
                     </Stack>
                 </Box>
                 <Spacer/>
@@ -96,6 +109,23 @@ function Home() {
                     ))) : 'No Item selected'}
                 </Box>
             </Flex>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <HStack>
+                        <ModalHeader>Add Application</ModalHeader>
+                        <ModalCloseButton />
+                    </HStack>
+                    <ModalBody>
+                        <Text>Application Form</Text>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme='teal' onClick={onClose} mr={3}>Add Application</Button>
+                        <Button colorScheme='red' onClick={onClose}>Cancel</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
     )
 }
 
