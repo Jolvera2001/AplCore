@@ -27,13 +27,17 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
+    FormControl,
+    Input,
+    Select,
+    FormLabel,
 
 } from '@chakra-ui/react'
 import { FaCheck, FaBan } from "react-icons/fa6"
 
 function Home() {
     const [data, setData] = useState([]); // empty list
-    const [editing, setEditing] = useState();
+    const [editing, setEditing] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     useEffect(() => {
@@ -69,7 +73,7 @@ function Home() {
     return (
         <>
             <Flex mt={10} mx={7} >
-                <Box w="40%" overflow="auto" maxHeight="80vh">
+                <Box w="40%" overflow="auto" maxHeight="82vh">
                     <Stack spacing={2.5} >
                         <HStack>
                             <Button onClick={onOpen}>Add Aplication</Button>
@@ -117,7 +121,21 @@ function Home() {
                         <ModalCloseButton />
                     </HStack>
                     <ModalBody>
-                        <Text>Application Form</Text>
+                        <FormControl>
+                            <FormLabel>Title</FormLabel>
+                            <Input type='text' placeholder='Title' />
+                            <FormLabel>Company</FormLabel>
+                            <Input type='text' placeholder='Company' />
+                            <FormLabel>Status</FormLabel>
+                            <Select>
+                                <option value='Pending'>Pending</option>
+                                <option value='Accepted'>Accepted</option>
+                                <option value='Interview'>Interview</option>
+                                <option value='Rejected'>Rejected</option>
+                            </Select>
+                            <FormLabel>Description</FormLabel>
+                            <Input type='text' placeholder='Description' />
+                        </FormControl>
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme='teal' onClick={onClose} mr={3}>Add Application</Button>

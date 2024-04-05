@@ -8,7 +8,6 @@ import {
 import Root from './routes/Root.jsx'
 import Home from './routes/Home.jsx'
 import Register from './routes/Register.jsx'
-import AddApl from './routes/AddApplication.jsx';
 import AplProfile from './routes/Profile.jsx';
 
 const router = createBrowserRouter([
@@ -23,10 +22,6 @@ const router = createBrowserRouter([
       {
         path: '/register',
         element: <Register />,
-      },
-      {
-        path: '/addapl',
-        element: <AddApl />,
       },
       {
         path: '/profile',
