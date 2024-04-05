@@ -64,10 +64,9 @@ function Home() {
         return DateTime.fromISO(time).toLocaleString();
     }
 
-    function editItem(index) {
-        console.log('Editing item at index:', index);
-        console.log(data[index]);
-        setEditing(data[index]);
+    function editItem(apl) {
+        console.log("editing: ", apl);
+        setEditing(apl);
     }
 
     return (
@@ -79,7 +78,7 @@ function Home() {
                             <Button onClick={onOpen}>Add Aplication</Button>
                         </HStack>
                         {data ? data.map((apl, index) => (
-                            <Card key={index} size='sm' onClick={editItem}>
+                            <Card key={index} size='sm' onClick={editItem(apl)}>
                                 <CardHeader>
                                     <HStack>
                                         <Avatar size='sm' name={apl.company}> 
@@ -108,9 +107,11 @@ function Home() {
                 </Center>
                 <Spacer/>
                 <Box w="50%">
-                    { editing ? (editing.map((apl, index) => (
-                        <Heading key={index} size='md'>{apl.title}</Heading>
-                    ))) : 'No Item selected'}
+                    { editing ? (
+                        <Box key={editing._id}>
+                            <Heading size='md'>{editing.title}</Heading>
+                        </Box>
+                    ) : 'No Item selected'}
                 </Box>
             </Flex>
             <Modal isOpen={isOpen} onClose={onClose}>
