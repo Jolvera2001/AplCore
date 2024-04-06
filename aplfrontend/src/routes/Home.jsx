@@ -102,7 +102,7 @@ function Home() {
                 <Spacer/>
                 <Box w="50%" h='100vh'>
                     { editing ? (
-                        <Box key={editing._id}>
+                        <Box key={editing._id} pr={12} mr={4}>
                             <Stack>
                                 <HStack spacing={3}>
                                     <Avatar size='md' name={editing.company} src={`https://logo.clearbit.com/${editing.company}.com?size=180`}/>
@@ -119,7 +119,7 @@ function Home() {
                                     </Select>
                                     <FormLabel>Description</FormLabel>
                                     <Textarea value={editing.description} size='md' resize='horizontal' />
-                                    <Divider m={5} borderWidth={2}/>
+                                    <Divider mt={5} mb={5} borderWidth={2}/>
                                     <FormLabel>Notes</FormLabel>
                                     <Textarea size='lg' resize='horizontal' />
                                 </FormControl>
