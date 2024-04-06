@@ -119,6 +119,9 @@ function Home() {
                                     </Select>
                                     <FormLabel>Description</FormLabel>
                                     <Textarea value={editing.description} size='md' resize='horizontal' />
+                                    <Divider m={5} borderWidth={2}/>
+                                    <FormLabel>Notes</FormLabel>
+                                    <Textarea size='lg' resize='horizontal' />
                                 </FormControl>
                             </Stack>
                             <ButtonGroup>
@@ -159,6 +162,7 @@ function Home() {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+            {/* TODO: Move footer to ROOT component */}
             <Box h='125px' bg='black' p={10}>
                 <Grid>
                     <GridItem>
