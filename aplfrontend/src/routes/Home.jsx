@@ -1,38 +1,43 @@
 import React, { useState, useEffect } from 'react'
 import {
-    useDisclosure,
-    Container,
-    Box,
-    Card,
-    CardHeader,
-    CardFooter,
-    CardBody,
-    Heading,
-    Divider,
-    Stack,
-    Text,
-    Button,
-    HStack,
     Avatar,
     AvatarBadge,
     Badge,
+    Box,
+    Button,
+    ButtonGroup,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
     Center,
+    Container,
+    Divider,
     Flex,
-    Spacer,
-    Spinner,
+    FormControl,
+    FormLabel,
+    Grid,
+    GridItem,
+    Heading,
+    HStack,
+    Input,
+    Link,
     Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
     ModalBody,
     ModalCloseButton,
-    FormControl,
-    Input,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Select,
-    FormLabel,
+    Spacer,
+    Spinner,
+    Stack,
+    Text,
+    Textarea,
+    useDisclosure,
 
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 import { FaCheck, FaBan } from "react-icons/fa6"
 
 function Home() {
@@ -60,28 +65,19 @@ function Home() {
         }
     }
 
-    function getDateTime(time) {
-        return DateTime.fromISO(time).toLocaleString();
-    }
-
-    function editItem(apl) {
-        console.log("editing: ", apl);
-        setEditing(apl);
-    }
-
     return (
         <>
             <Flex mt={10} mx={7} >
-                <Box w="40%" overflow="auto" maxHeight="82vh">
+                <Box w="40%" overflow="auto" maxHeight="85vh">
                     <Stack spacing={2.5} >
                         <HStack>
                             <Button onClick={onOpen}>Add Aplication</Button>
                         </HStack>
                         {data ? data.map((apl, index) => (
-                            <Card key={index} size='sm' onClick={editItem(apl)}>
+                            <Card key={index} size='sm' onClick={() => setEditing(apl)} >
                                 <CardHeader>
                                     <HStack>
-                                        <Avatar size='sm' name={apl.company}> 
+                                        <Avatar size='sm' name={apl.company} src={`https://logo.clearbit.com/${apl.company}.com?size=112`}> 
                                             <AvatarBadge boxSize='1.25em' bg={getStatusColor(apl.status)} borderColor=''/>
                                         </Avatar>
                                         <Heading size='md'>{apl.title}</Heading>
@@ -93,9 +89,7 @@ function Home() {
                                     <Text>{apl.description}</Text>
                                 </CardBody>
                                 <CardFooter>
-                                    <HStack spacing={2.5}>
-                                        <Button>Update</Button>
-                                    </HStack>
+
                                 </CardFooter>
                             </Card>
                         )) : <Spinner size='lg' />}
@@ -106,10 +100,31 @@ function Home() {
                     <Divider orientation='vertical' color='black' />
                 </Center>
                 <Spacer/>
-                <Box w="50%">
+                <Box w="50%" h='100vh'>
                     { editing ? (
                         <Box key={editing._id}>
-                            <Heading size='md'>{editing.title}</Heading>
+                            <Stack>
+                                <HStack spacing={3}>
+                                    <Avatar size='md' name={editing.company} src={`https://logo.clearbit.com/${editing.company}.com?size=180`}/>
+                                    <Heading size='lg'>{editing.title}</Heading>
+                                </HStack>
+                                <Text as="i" fontSize='xl'>{editing.company}</Text>
+                                <FormControl mb={5} mt={5}>
+                                    <FormLabel>Status</FormLabel>
+                                    <Select value={editing.status} >
+                                        <option value='Pending'>Pending</option>
+                                        <option value='Accepted'>Accepted</option>
+                                        <option value='Interview'>Interview</option>
+                                        <option value='Rejected'>Rejected</option>
+                                    </Select>
+                                    <FormLabel>Description</FormLabel>
+                                    <Textarea value={editing.description} size='md' resize='horizontal' />
+                                </FormControl>
+                            </Stack>
+                            <ButtonGroup>
+                                <Button colorScheme='green' leftIcon={<FaCheck />} >Make Changes</Button>
+                                <Button colorScheme='red' leftIcon={<FaBan />} onClick={() => setEditing(null)}>Cancel</Button>
+                            </ButtonGroup>
                         </Box>
                     ) : 'No Item selected'}
                 </Box>
@@ -144,6 +159,15 @@ function Home() {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+            <Box h='125px' bg='black' p={10}>
+                <Grid>
+                    <GridItem>
+                        <Link href="https://clearbit.com" target='_blank'>
+                            <Text color='white' fontSize='lg'>Logo API</Text>
+                        </Link>
+                    </GridItem>
+                </Grid>
+            </Box>
         </>
     )
 }
