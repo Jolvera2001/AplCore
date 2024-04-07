@@ -45,6 +45,27 @@ function Home() {
     const [editing, setEditing] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const addApplication = {
+        user_id: "6600ed08f2a198fc24d51273",
+        title: "",
+        status: "",
+        description: "",
+        company: "",
+        is_closed: false,
+    }
+
+    const handleSubmitAddApplication = () => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(addApplication)
+        };
+        fetch('http://localhost:8080/application', requestOptions)
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.log(error));
+    }
+
     useEffect(() => {
         fetch('http://localhost:8080/application/6600ed08f2a198fc24d51273')
             .then(response => response.json())
@@ -140,24 +161,24 @@ function Home() {
                         <ModalCloseButton />
                     </HStack>
                     <ModalBody>
-                        <FormControl>
-                            <FormLabel>Title</FormLabel>
-                            <Input type='text' placeholder='Title' />
+                        <FormControl isRequired>
+                            <FormLabel >Title</FormLabel>
+                            <Input type='text' placeholder='Title' onChange={event => addApplication.title = event.currentTarget.value}/>
                             <FormLabel>Company</FormLabel>
-                            <Input type='text' placeholder='Company' />
+                            <Input type='text' placeholder='Company' onChange={event => addApplication.company = event.currentTarget.value}/>
                             <FormLabel>Status</FormLabel>
-                            <Select>
+                            <Select onChange={event => addApplication.status = event.currentTarget.value}>
                                 <option value='Pending'>Pending</option>
                                 <option value='Accepted'>Accepted</option>
                                 <option value='Interview'>Interview</option>
                                 <option value='Rejected'>Rejected</option>
                             </Select>
                             <FormLabel>Description</FormLabel>
-                            <Input type='text' placeholder='Description' />
+                            <Input type='text' placeholder='Description' onChange={event => addApplication.decsription = event.currentTarget.value} />
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme='teal' onClick={onClose} mr={3}>Add Application</Button>
+                        <Button colorScheme='teal' onClick={handleSubmitAddApplication} mr={3}>Add Application</Button>
                         <Button colorScheme='red' onClick={onClose}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>
