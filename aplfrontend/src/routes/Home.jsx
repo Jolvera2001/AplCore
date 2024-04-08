@@ -45,40 +45,63 @@ import {
 
 
 } from '@chakra-ui/react';
-import { FaCheck, FaBan, FaPlus } from "react-icons/fa6"
+import { FaCheck, FaBan, FaPlus, FaTrash } from "react-icons/fa6"
 
 function Home() {
-    const [data, setData] = useState([]); // empty list
-    const [editing, setEditing] = useState(null);
+    const [data, setData] = useState([]); 
     const { isOpen, onOpen, onClose } = useDisclosure();
+    
+    // state for adding application
+    const [addedTitle, setAddedTitle] = useState("");
+    const [addedCompany, setAddedCompany] = useState("");
+    const [addedDesc, setAddedDesc] = useState("");
+    const [addedStatus, setAddedStatus] = useState("Pending");
+
+    const clearAdded = () => {
+        setAddedTitle("");
+        setAddedCompany("");
+        setAddedDesc("");
+        setAddedStatus("Pending");
+    }
+
+    const debugAdded = () => {
+        console.log(addedTitle, addedCompany, addedDesc, addedStatus);
+    }
+
+    // state for editing application
+    const [editing, setEditing] = useState(null);
 
     const handleSubmitAddApplication = () => {
-        const toast = useToast();
-
-        
+        const newApplication ={
+            "user_id": '6600ed08f2a198fc24d51273',
+            "title": addedTitle,
+            "description": addedDesc,
+            "status": addedStatus,
+            "is_closed": false,
+            "company": addedCompany
+        }
 
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify("wee")
-        };
+            body: JSON.stringify(newApplication)};
 
         fetch('http://localhost:8080/application/add', requestOptions)
-            .then(response => response.json())
-            .then(data => console.log(data), toast({
-                title: "Application added",
-                description: "Your application has been added successfully.",
-                status: "success",
-                duration: 5000,
-                isClosable: true,    
-            }))
-            .catch(error => console.log(error), toast({
-                title: "Error adding application",
-                description: "There was a snag. Try again later.",
-                status: "error",
-                duration: 5000,
-                isClosable: true, 
-            }));  
+            .then(response => console.log(response))
+            .then(data => console.log(data))
+            .catch(error => console.log(error));  
+
+        clearAdded();
+    }
+
+    const deleteApplication = (id) => {
+        console.log(id);
+        fetch(`http://localhost:8080/application/delete/${id}`, {method: 'DELETE'})
+            .then(response => console.log(response))
+            .then(data => console.log(data))
+            .catch(error => console.log(error));
+
+        setEditing(null);
     }
 
     useEffect(() => {
@@ -171,6 +194,7 @@ function Home() {
                             <ButtonGroup>
                                 <Button colorScheme='green' leftIcon={<FaCheck />} >Make Changes</Button>
                                 <Button colorScheme='red' leftIcon={<FaBan />} onClick={() => setEditing(null)}>Cancel</Button>
+                                <Button colorScheme='red' leftIcon={<FaTrash />} onClick={() => deleteApplication(editing._id.$oid)} >Delete</Button>
                             </ButtonGroup>
                         </Box>
                     ) : 'No Item selected'}
@@ -185,24 +209,25 @@ function Home() {
                     </HStack>
                     <ModalBody>
                         <FormControl isRequired>
-                            <FormLabel >Title</FormLabel>
-                            <Input type='text' placeholder='Title'/>
+                            <FormLabel>Title</FormLabel>
+                            <Input type='text' placeholder='Title' value={addedTitle} onChange={e => setAddedTitle(e.target.value)}/>
                             <FormLabel>Company</FormLabel>
-                            <Input type='text' placeholder='Company'/>
+                            <Input type='text' placeholder='Company' value={addedCompany} onChange={e => setAddedCompany(e.target.value)}/>
                             <FormLabel>Status</FormLabel>
-                            <Select>
+                            <Select defaultValue="Pending" value={addedStatus} onChange={e => setAddedStatus(e.target.value)}>
                                 <option value='Pending'>Pending</option>
                                 <option value='Accepted'>Accepted</option>
                                 <option value='Interview'>Interview</option>
                                 <option value='Rejected'>Rejected</option>
                             </Select>
                             <FormLabel>Description</FormLabel>
-                            <Input type='text' placeholder='Description' />
+                            <Textarea type='text' placeholder='Description' value={addedDesc} onChange={e => setAddedDesc(e.target.value)}/>
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme='teal' onClick={handleSubmitAddApplication} mr={3}>Add Application</Button>
-                        <Button colorScheme='red' onClick={onClose}>Cancel</Button>
+                        <Button colorScheme='red' onClick={() => {clearAdded(); onClose()}} mr={3}>Cancel</Button>
+                        <Button colorScheme='blue' onClick={debugAdded}>Debug</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
