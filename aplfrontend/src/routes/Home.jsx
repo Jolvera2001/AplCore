@@ -40,7 +40,9 @@ import {
     TabList,
     TabPanels,
     Tab,
-    TabPanel
+    TabPanel,
+    useToast,
+
 
 } from '@chakra-ui/react';
 import { FaCheck, FaBan, FaPlus } from "react-icons/fa6"
@@ -50,25 +52,19 @@ function Home() {
     const [editing, setEditing] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const addApplication = {
-        user_id: "6600ed08f2a198fc24d51273",
-        title: "",
-        status: "",
-        description: "",
-        company: "",
-        is_closed: false,
-    }
-
     const handleSubmitAddApplication = () => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(addApplication)
+            body: JSON.stringify("wee")
         };
-        fetch('http://localhost:8080/application', requestOptions)
+        
+        fetch('http://localhost:8080/application/add', requestOptions)
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(error => console.log(error));
+
+        
     }
 
     useEffect(() => {
@@ -176,18 +172,18 @@ function Home() {
                     <ModalBody>
                         <FormControl isRequired>
                             <FormLabel >Title</FormLabel>
-                            <Input type='text' placeholder='Title' onChange={event => addApplication.title = event.currentTarget.value}/>
+                            <Input type='text' placeholder='Title'/>
                             <FormLabel>Company</FormLabel>
-                            <Input type='text' placeholder='Company' onChange={event => addApplication.company = event.currentTarget.value}/>
+                            <Input type='text' placeholder='Company'/>
                             <FormLabel>Status</FormLabel>
-                            <Select onChange={event => addApplication.status = event.currentTarget.value}>
+                            <Select>
                                 <option value='Pending'>Pending</option>
                                 <option value='Accepted'>Accepted</option>
                                 <option value='Interview'>Interview</option>
                                 <option value='Rejected'>Rejected</option>
                             </Select>
                             <FormLabel>Description</FormLabel>
-                            <Input type='text' placeholder='Description' onChange={event => addApplication.decsription = event.currentTarget.value} />
+                            <Input type='text' placeholder='Description' />
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>
