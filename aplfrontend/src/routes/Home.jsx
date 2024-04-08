@@ -36,9 +36,14 @@ import {
     Text,
     Textarea,
     useDisclosure,
+    Tabs,
+    TabList,
+    TabPanels,
+    Tab,
+    TabPanel
 
 } from '@chakra-ui/react';
-import { FaCheck, FaBan } from "react-icons/fa6"
+import { FaCheck, FaBan, FaPlus } from "react-icons/fa6"
 
 function Home() {
     const [data, setData] = useState([]); // empty list
@@ -88,14 +93,26 @@ function Home() {
 
     return (
         <>
-            <Flex mt={10} mx={7} >
-                <Box w="40%" overflow="auto" maxHeight="85vh">
+            <Flex>
+                <Box w='100vw' p={5} pl={14} pr={16}>
+                    <HStack>
+                        <Button onClick={onOpen} leftIcon={<FaPlus />} size='sm' >Add Aplication</Button>
+                        <Spacer />
+                        <Text>Views:</Text>
+                        <Tabs>
+                            <TabList>
+                                <Tab>Default</Tab>
+                                <Tab>Table</Tab>
+                            </TabList>
+                        </Tabs>
+                    </HStack>
+                </Box>
+            </Flex>
+            <Flex mx={8} >
+                <Box w="45%" overflow="auto" maxHeight="85vh" pl={5} borderRight='2px' borderColor='grey'>
                     <Stack spacing={2.5} >
-                        <HStack>
-                            <Button onClick={onOpen}>Add Aplication</Button>
-                        </HStack>
                         {data ? data.map((apl, index) => (
-                            <Card key={index} size='sm' onClick={() => setEditing(apl)} >
+                            <Card key={index} size='sm' w='md' onClick={() => setEditing(apl)} >
                                 <CardHeader>
                                     <HStack>
                                         <Avatar size='sm' name={apl.company} src={`https://logo.clearbit.com/${apl.company}.com?size=112`}> 
@@ -116,10 +133,6 @@ function Home() {
                         )) : <Spinner size='lg' />}
                     </Stack>
                 </Box>
-                <Spacer/>
-                <Center>
-                    <Divider orientation='vertical' color='black' />
-                </Center>
                 <Spacer/>
                 <Box w="50%" h='100vh'>
                     { editing ? (
@@ -184,15 +197,7 @@ function Home() {
                 </ModalContent>
             </Modal>
             {/* TODO: Move footer to ROOT component */}
-            <Box h='125px' bg='black' p={10}>
-                <Grid>
-                    <GridItem>
-                        <Link href="https://clearbit.com" target='_blank'>
-                            <Text color='white' fontSize='lg'>Logo API</Text>
-                        </Link>
-                    </GridItem>
-                </Grid>
-            </Box>
+            
         </>
     )
 }
