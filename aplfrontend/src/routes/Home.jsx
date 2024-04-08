@@ -53,18 +53,32 @@ function Home() {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const handleSubmitAddApplication = () => {
+        const toast = useToast();
+
+        
+
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify("wee")
         };
-        
+
         fetch('http://localhost:8080/application/add', requestOptions)
             .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.log(error));
-
-        
+            .then(data => console.log(data), toast({
+                title: "Application added",
+                description: "Your application has been added successfully.",
+                status: "success",
+                duration: 5000,
+                isClosable: true,    
+            }))
+            .catch(error => console.log(error), toast({
+                title: "Error adding application",
+                description: "There was a snag. Try again later.",
+                status: "error",
+                duration: 5000,
+                isClosable: true, 
+            }));  
     }
 
     useEffect(() => {
