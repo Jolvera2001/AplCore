@@ -1,5 +1,6 @@
 pub mod user_controllers;
 mod application_controllers;
+pub mod jwt_controllers;
 
 pub use user_controllers::{
     add_user,

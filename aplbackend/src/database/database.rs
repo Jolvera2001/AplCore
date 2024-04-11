@@ -10,8 +10,8 @@ use mongodb::results::{DeleteResult, UpdateResult};
 use crate::models::{ User, Application };
 
 pub struct MongoRepo {
-    users_col: Collection<User>,
-    applications_col: Collection<Application>,
+    pub users_col: Collection<User>,
+    pub applications_col: Collection<Application>,
 }
 
 impl MongoRepo {
@@ -34,6 +34,7 @@ impl MongoRepo {
             role: new_user.role.clone(),
             name: new_user.name.clone(),
             password: new_user.password.clone(),
+            email: new_user.email.clone(),
             age: new_user.age
         };
 
