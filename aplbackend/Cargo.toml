@@ -10,10 +10,12 @@ actix-web = "4.5.1"
 json = "0.12.4"
 uuid = "1.8.0"
 serde = { version = "1.0.197", features = ["derive"] }
-validator = { version = "0.17.0", features = ["derive"] }
+validator = { version = "0.18.1", features = ["derive"] }
 futures = "0.3.30"
 dotenv = "0.15.0"
 actix-cors = "0.7.0"
+argon2 = "0.5.3"
+jsonwebtoken = "9.3.0"
 
 [dependencies.mongodb]
 version = "2.8.2"
