@@ -1,6 +1,6 @@
 use actix_web::{Responder, get, post, delete, put, HttpResponse, web::Path, web::Json, web::Data };
 use crate::database::MongoRepo;
-use crate::models::{Application, User};
+use crate::models::User;
 use crate::database::user_crud::*;
 
 
