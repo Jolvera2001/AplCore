@@ -3,7 +3,7 @@ use actix_web::{ Responder, web::Data };
 use crate::database::MongoRepo;
 use crate::models::{ LoginRequest, RegisterRequest, User };
 
-pub async fn get_user(login: LoginRequest, db: Data<MongoRepo>) -> impl Responder {
+pub async fn get_user(login: LoginRequest, db: Data<MongoRepo>) -> Result<Option<User>, Error>{
     let query = doc! {
         "username": login.name,
         "password": login.password
@@ -17,7 +17,7 @@ pub async fn get_user(login: LoginRequest, db: Data<MongoRepo>) -> impl Responde
     Ok(user_detail)
 }
 
-pub async fn register_user(registration: RegisterRequest, db: Data<MongoRepo>) -> impl Responder {
+pub async fn register_user(registration: RegisterRequest, db: Data<MongoRepo>) -> Result<InsertOneResult, Error>{
     let new_user = User {
         id: None,
         name: registration.name,
@@ -30,7 +30,7 @@ pub async fn register_user(registration: RegisterRequest, db: Data<MongoRepo>) -
         .users_col
         .insert_one(new_user, None)
         .await
-        .Ok()
+        .ok()
         .expect("Error running insertion");
     Ok(user_detail)
 }
