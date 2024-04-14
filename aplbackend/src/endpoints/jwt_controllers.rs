@@ -5,8 +5,23 @@ use crate::models::{ Claims, LoginRequest, RegisterRequest, user_model };
 use crate::database::{ get_user, register_user, MongoRepo };
 
 #[post("/auth/login")]
-async fn login(info: Json<LoginRequest>) -> impl Responder {
+async fn login(info: Json<LoginRequest>, db: Data<MongoRepo>) -> impl Responder {
+    let login_request = LoginRequest {
+        name: info.name.to_owned(),
+        password: info.password.to_owned()
+    };
 
+    let user = get_user(login_request, db).await;
+    match user {
+        Some(user) => {
+            if  verify_hash(info.password.to_owned(), user.password.to_owned()).await {
+                // TODO: do JWT Stuff
+            } else {
+                HttpResponse::Unauthorized().finish()
+            }
+        }
+        error => HttpResponse::BadRequest().json(error)
+    }
 }
 
 #[post("/auth/register")]
