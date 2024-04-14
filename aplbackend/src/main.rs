@@ -4,6 +4,7 @@ use actix_cors::Cors;
 mod database;
 mod endpoints;
 mod models;
+mod AuthTools;
 
 use endpoints::{
     add_user,
