@@ -7,3 +7,49 @@ use mongodb::results::{DeleteResult, InsertOneResult, UpdateResult};
 use crate::database::MongoRepo;
 use crate::models::batch_model::Batch;
 
+pub async fn create_batch_crud(new_batch: Batch, db: Data<MongoRepo>) -> Result<InsertOneResult, Error> {
+    let new_doc = Batch {
+        id: None,
+        name: new_batch.name.clone(),
+        description: new_batch.description.clone(),
+    };
+
+    let batch = db
+        .batches_col
+        .insert_one(new_doc, None)
+        .await
+        .ok()
+        .expect("Error creating batch");
+    Ok(batch)
+}
+
+pub async fn get_batch_crud(id: String, db: Data<MongoRepo>) -> Result<Option<Batch>, Error> {
+    let obj_id = ObjectId::parse_str(&id)?;
+    let query = doc! { "_id": obj_id };
+    let batch = db
+        .batches_col
+        .find_one(query, None)
+        .await
+        .ok()
+        .expect("Error getting batch");
+    Ok(batch)
+}
+
+pub async fn get_all_batches_crud(user_id: String, db: Data<MongoRepo>) -> Result<Vec<Batch>, Error> {
+    let id = ObjectId::parse_str(user_id).unwrap();
+    let query = doc! {"user_id": id };
+
+    let find_detail = db
+        .batches_col
+        .find(query, None)
+        .await
+        .ok()
+        .expect("Error getting user batches");
+
+    let batch_vec: Vec<Batch> = find_detail
+        .try_collect()
+        .await
+        .ok()
+        .expect("Error getting user batches");
+    Ok(batch_vec)
+}
