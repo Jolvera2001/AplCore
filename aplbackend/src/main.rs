@@ -15,7 +15,9 @@ use endpoints::{
     edit_application,
     get_applications,
     get_one_application,
-    delete_application
+    delete_application,
+    login,
+    register
 };
 
 use database::MongoRepo;
@@ -49,7 +51,9 @@ async fn main() -> std::io::Result<()> {
         .service(get_applications)
         .service(get_one_application)
         .service(edit_application)
-        .service(delete_application))
+        .service(delete_application)
+        .service(login)
+        .service(register))
         .bind(("localhost", 8080))?
         .run()
         .await

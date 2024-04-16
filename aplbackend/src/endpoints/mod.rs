@@ -16,3 +16,8 @@ pub use application_controllers::{
     edit_application,
     delete_application
 };
+
+pub use jwt_controllers::{
+    login,
+    register
+};
