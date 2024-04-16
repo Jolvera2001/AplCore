@@ -7,11 +7,12 @@ use dotenv::dotenv;
 use mongodb::bson::oid::ObjectId;
 use mongodb::results::{DeleteResult, UpdateResult};
 
-use crate::models::{ User, Application };
+use crate::models::{ User, Application, Batch };
 
 pub struct MongoRepo {
     pub users_col: Collection<User>,
     pub applications_col: Collection<Application>,
+    pub batches_col: Collection<Batch>,
 }
 
 impl MongoRepo {
@@ -25,6 +26,7 @@ impl MongoRepo {
         let db = client.database("AplCoreMain");
         let users_col: Collection<User> = db.collection("Users");
         let applications_col: Collection<Application> = db.collection("Applications");
-        MongoRepo { users_col, applications_col }
+        let batches_col: Collection<Batch> = db.collection("Batches");
+        MongoRepo { users_col, applications_col, batches_col }
     }
 }
