@@ -10,7 +10,7 @@ pub struct Claims {
 
 #[derive(Deserialize)]
 pub struct LoginRequest {
-    pub name: String,
+    pub email: String,
     pub password: String,
 }
 

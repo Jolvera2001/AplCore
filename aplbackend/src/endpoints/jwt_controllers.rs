@@ -7,7 +7,7 @@ use crate::auth_tools::jwt_utils::*;
 #[post("/auth/login")]
 async fn login(info: Json<LoginRequest>, db: Data<MongoRepo>) -> impl Responder {
     let login_request = LoginRequest {
-        name: info.name.to_owned(),
+        email: info.email.to_owned(),
         password: info.password.to_owned()
     };
 
@@ -26,7 +26,8 @@ async fn login(info: Json<LoginRequest>, db: Data<MongoRepo>) -> impl Responder 
             } else {
                 HttpResponse::Unauthorized().finish()
             }
-        }
+        },
+        Ok(None) => HttpResponse::Unauthorized().body("User not found"),
         error => HttpResponse::BadRequest().body(error.expect_err("Error getting user").to_string())
     }
 }

@@ -5,8 +5,7 @@ use crate::models::{ LoginRequest, RegisterRequest, User };
 
 pub async fn get_user(login: LoginRequest, db: Data<MongoRepo>) -> Result<Option<User>, Error>{
     let query = doc! {
-        "username": login.name,
-        "password": login.password
+        "email": login.email,
     };
     let user_detail = db
         .users_col
