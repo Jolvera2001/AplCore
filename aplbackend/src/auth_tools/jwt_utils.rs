@@ -12,12 +12,21 @@ use actix_web::{ cookie, HttpResponse };
 use chrono::{ TimeDelta, Utc };
 use serde::{ Deserialize, Serialize };
 use std::env;
+use actix_web::dev::ServiceRequest;
+use actix_web_httpauth::extractors::bearer::BearerAuth;
 
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Claims {
     sub: String,
     exp: i64,
+}
+
+async fn validator(req: ServiceRequest, credentials: BearerAuth) -> Result<ServiceRequest, Error> {
+    match validate_jwt(credentials.token()) {
+        Ok(_) => Ok(req),
+        Err(_) => Err(actix_web::error::ErrorUnauthorized("Invalid token")),
+    }
 }
 
 pub fn generate_jwt(id: &str) -> String {
