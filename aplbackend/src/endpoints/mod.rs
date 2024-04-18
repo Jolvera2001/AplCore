@@ -1,5 +1,6 @@
 pub mod user_controllers;
 mod application_controllers;
+pub mod jwt_controllers;
 
 pub use user_controllers::{
     add_user,
@@ -14,4 +15,9 @@ pub use application_controllers::{
     add_application,
     edit_application,
     delete_application
+};
+
+pub use jwt_controllers::{
+    login,
+    register
 };

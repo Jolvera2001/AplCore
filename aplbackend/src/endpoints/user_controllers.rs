@@ -1,12 +1,13 @@
 use actix_web::{Responder, get, post, delete, put, HttpResponse, web::Path, web::Json, web::Data };
 use crate::database::MongoRepo;
-use crate::models::{ User };
+use crate::models::User;
+use crate::database::user_crud::*;
 
 
 #[get("/user/{id}")]
 pub async fn get_user(id: Path<String>, db: Data<MongoRepo>) -> impl Responder {
-    let obj_id = id.into_inner();
-    let user_detail = db.get_user(obj_id).await;
+    let obj_id = id.clone();
+    let user_detail = get_user_crud(obj_id, db).await;
     match user_detail {
         Ok(user) => HttpResponse::Ok().json(user),
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
@@ -15,14 +16,8 @@ pub async fn get_user(id: Path<String>, db: Data<MongoRepo>) -> impl Responder {
 
 #[post("/user/add")]
 pub async fn add_user(new_user: Json<User>, db: Data<MongoRepo>) -> impl Responder {
-    let user: User = User {
-        id: None,
-        role: new_user.role.to_owned(),
-        name: new_user.name.to_owned(),
-        password: new_user.password.to_owned(),
-        age: new_user.age.to_owned(),
-    };
-    let user_detail = db.create_user(user).await;
+    let user: User = json_to_user(new_user).await;
+    let user_detail = create_user_crud(user, db).await;
     match user_detail {
         Ok(user) => HttpResponse::Ok().json(user),
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
@@ -31,16 +26,9 @@ pub async fn add_user(new_user: Json<User>, db: Data<MongoRepo>) -> impl Respond
 
 #[put("/user/edit/{id}")]
 pub async fn edit_user(id: Path<String>, new_user: Json<User>, db: Data<MongoRepo>) -> impl Responder {
-    let user: User = User {
-        id: None,
-        role: new_user.role.to_owned(),
-        name: new_user.name.to_owned(),
-        password: new_user.password.to_owned(),
-        age: new_user.age.to_owned(),
-    };
-
+    let user: User = json_to_user(new_user).await;
     let obj_id: String = id.into_inner();
-    let user_detail = db.edit_user(user, obj_id).await;
+    let user_detail = edit_user_crud(user, obj_id, db).await;
     match user_detail {
         Ok(update_result) => HttpResponse::Ok().json(update_result),
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
@@ -50,9 +38,20 @@ pub async fn edit_user(id: Path<String>, new_user: Json<User>, db: Data<MongoRep
 #[delete("/user/delete/{id}")]
 pub async fn delete_user(id: Path<String>, db: Data<MongoRepo>) -> impl Responder {
     let obj_id = id.into_inner();
-    let user_detail = db.delete_user(obj_id).await;
+    let user_detail = delete_user_crud(obj_id, db).await;
     match user_detail {
         Ok(delete_result) => HttpResponse::Ok().json(delete_result),
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
+}
+
+async fn json_to_user(json: Json<User>) -> User {
+    User {
+        id: None,
+        role: json.role.to_owned(),
+        name: json.name.to_owned(),
+        password: json.password.to_owned(),
+        email: json.email.to_owned(),
+        age: json.age.to_owned(),
     }
 }

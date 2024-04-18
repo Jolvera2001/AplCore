@@ -4,6 +4,7 @@ use actix_cors::Cors;
 mod database;
 mod endpoints;
 mod models;
+mod auth_tools;
 
 use endpoints::{
     add_user,
@@ -14,7 +15,9 @@ use endpoints::{
     edit_application,
     get_applications,
     get_one_application,
-    delete_application
+    delete_application,
+    login,
+    register
 };
 
 use database::MongoRepo;
@@ -31,7 +34,13 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || 
         App::new()
-        .wrap(Cors::default().allowed_origin("http://localhost:5173"))
+        .wrap(Cors::default()
+            .allowed_origin("http://localhost:5173")
+            .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
+            .allowed_headers(vec![actix_web::http::header::AUTHORIZATION, actix_web::http::header::ACCEPT])
+            .allowed_header(actix_web::http::header::CONTENT_TYPE)
+            .supports_credentials()
+        )
         .app_data(db_data.clone())
         .service(hello)
         .service(add_user)
@@ -42,7 +51,9 @@ async fn main() -> std::io::Result<()> {
         .service(get_applications)
         .service(get_one_application)
         .service(edit_application)
-        .service(delete_application))
+        .service(delete_application)
+        .service(login)
+        .service(register))
         .bind(("localhost", 8080))?
         .run()
         .await

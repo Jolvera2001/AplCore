@@ -18,7 +18,10 @@ import {
   Heading,
   HStack,
   Icon,
-
+  Grid,
+  GridItem,
+  Link,
+  Text
 
 } from "@chakra-ui/react";
 import AplCoreLogo from '../assets/AplCoreLogo.svg'
@@ -65,6 +68,15 @@ function Root() {
       </Flex>
       <Box>
         <Outlet />
+      </Box>
+      <Box h='125px' bg='black' p={10}>
+        <Grid>
+          <GridItem>
+            <Link href="https://clearbit.com" target='_blank'>
+              <Text color='white' fontSize='lg'>Logo API</Text>
+            </Link>
+          </GridItem>
+        </Grid>
       </Box>
     </>
   )
