@@ -65,7 +65,6 @@ pub async fn edit_application_crud(new_app: Application, app_id: String, db: Dat
     let filter = doc! {"_id": obj_id };
     let new_doc = doc! {
             "$set": {
-                "id": new_app.id,
                 "user_id": new_app.user_id,
                 "title": new_app.title,
                 "description": new_app.description,

@@ -42,7 +42,6 @@ pub async fn edit_user_crud(updated_user: User, id: String, db: Data<MongoRepo>)
     let filter = doc! {"_id": obj_id };
     let new_doc = doc! {
             "$set": {
-                "id": updated_user.id,
                 "name": updated_user.name,
                 "password": updated_user.password,
                 "email": updated_user.email,
