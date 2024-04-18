@@ -1,7 +1,18 @@
-use jsonwebtoken::{ encode, EncodingKey, Header };
+use jsonwebtoken::{
+    encode,
+    EncodingKey,
+    Header,
+    decode,
+    DecodingKey,
+    Validation,
+    Algorithm
+};
+
 use actix_web::{ cookie, HttpResponse };
 use chrono::{ TimeDelta, Utc };
 use serde::{ Deserialize, Serialize };
+use std::env;
+
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Claims {
@@ -10,11 +21,23 @@ struct Claims {
 }
 
 pub fn generate_jwt(id: &str) -> String {
+    let secret = env::var("APLCORE_SECRET").expect("APLCORE_SECRET must be set");
+    let exp = (Utc::now() + TimeDelta::try_days(1).unwrap()).timestamp();
     let claims = Claims {
         sub: id.to_string(),
-        exp: (Utc::now() + TimeDelta::try_days(1).unwrap()).timestamp(),
+        exp,
     };
-    encode(&Header::default(), &claims, &EncodingKey::from_secret("secret".as_ref())).unwrap()
+    let header = Header::new(Algorithm::HS256);
+    encode(&header, &claims, &EncodingKey::from_secret(secret.as_ref())).unwrap()
+}
+
+pub fn validate_jwt(token: &str) -> jsonwebtoken::errors::Result<jsonwebtoken::TokenData<Claims>> {
+    let secret = env::var("APLCORE_SECRET").expect("APLCORE_SECRET must be set");
+    decode::<Claims>(
+        token,
+        &DecodingKey::from_secret(secret.as_ref()),
+        &Validation::new(Algorithm::HS256),
+    )
 }
 
 pub fn create_cookie(jwt: &str) -> cookie::Cookie {

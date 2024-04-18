@@ -26,6 +26,7 @@ use endpoints::{
 };
 
 use database::MongoRepo;
+use crate::models::Claims;
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -37,7 +38,7 @@ async fn main() -> std::io::Result<()> {
     let db = MongoRepo::init().await;
     let db_data = Data::new(db);
 
-    HttpServer::new(move || 
+    HttpServer::new(move ||
         App::new()
         .wrap(Cors::default()
             .allowed_origin("http://localhost:5173")
