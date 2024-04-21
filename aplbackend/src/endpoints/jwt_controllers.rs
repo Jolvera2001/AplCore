@@ -4,7 +4,7 @@ use crate::models::{ LoginRequest, RegisterRequest };
 use crate::database::{ get_user, register_user, MongoRepo };
 use crate::auth_tools::jwt_utils::*;
 
-#[post("/auth/login")]
+#[post("/login")]
 async fn login(info: Json<LoginRequest>, db: Data<MongoRepo>) -> impl Responder {
     let login_request = LoginRequest {
         email: info.email.to_owned(),
@@ -32,7 +32,7 @@ async fn login(info: Json<LoginRequest>, db: Data<MongoRepo>) -> impl Responder 
     }
 }
 
-#[post("/auth/register")]
+#[post("/register")]
 async fn register(new_user: Json<RegisterRequest>, db: Data<MongoRepo>) -> impl Responder {
     let hashed_password = hash_password(new_user.password.to_owned()).await.expect("Error hashing password");
     let ready_user = RegisterRequest {
