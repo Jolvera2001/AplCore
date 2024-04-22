@@ -22,10 +22,10 @@ struct Claims {
     exp: i64,
 }
 
-pub async fn validator(req: ServiceRequest, credentials: BearerAuth) -> Result<ServiceRequest, actix_web::Error> {
+pub async fn validator(req: ServiceRequest, credentials: BearerAuth) -> Result<ServiceRequest, (actix_web::Error, ServiceRequest)> {
     match validate_jwt(credentials.token()) {
         Ok(_) => Ok(req),
-        Err(_) => Err(actix_web::error::ErrorUnauthorized("Invalid token")),
+        Err(_) => Err((actix_web::error::ErrorUnauthorized("Invalid token"), req))
     }
 }
 

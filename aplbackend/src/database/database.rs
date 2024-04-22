@@ -1,11 +1,8 @@
-use mongodb::{ bson::{ extjson::de::Error }, results::{ InsertOneResult }, Client, Collection, bson::doc };
-use futures::stream::{ TryStreamExt };
+use mongodb:: { Client, Collection };
 use std::env;
 
 extern crate dotenv;
 use dotenv::dotenv;
-use mongodb::bson::oid::ObjectId;
-use mongodb::results::{DeleteResult, UpdateResult};
 
 use crate::models::{ User, Application, Batch };
 

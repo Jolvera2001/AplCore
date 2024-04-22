@@ -1,5 +1,5 @@
-use mongodb::{ bson::{ extjson::de::Error }, results::{ InsertOneResult }, Client, Collection, bson::doc };
-use actix_web::{ Responder, web::Data };
+use mongodb::{ bson::{ extjson::de::Error }, results::{ InsertOneResult }, bson::doc };
+use actix_web::web::Data;
 use crate::database::MongoRepo;
 use crate::models::{ LoginRequest, RegisterRequest, User };
 
