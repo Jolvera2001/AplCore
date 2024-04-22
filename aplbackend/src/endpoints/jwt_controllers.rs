@@ -4,7 +4,7 @@ use crate::models::{ LoginRequest, RegisterRequest };
 use crate::database::{ get_user, register_user, MongoRepo };
 use crate::auth_tools::jwt_utils::*;
 
-#[post("/auth/login")]
+#[post("/login")]
 async fn login(info: Json<LoginRequest>, db: Data<MongoRepo>) -> impl Responder {
     let login_request = LoginRequest {
         email: info.email.to_owned(),
@@ -27,12 +27,12 @@ async fn login(info: Json<LoginRequest>, db: Data<MongoRepo>) -> impl Responder 
                 HttpResponse::Unauthorized().finish()
             }
         },
-        Ok(None) => HttpResponse::Unauthorized().body("User not found"),
+        Ok(None) => HttpResponse::NotFound().body("User not found"),
         error => HttpResponse::BadRequest().body(error.expect_err("Error getting user").to_string())
     }
 }
 
-#[post("/auth/register")]
+#[post("/register")]
 async fn register(new_user: Json<RegisterRequest>, db: Data<MongoRepo>) -> impl Responder {
     let hashed_password = hash_password(new_user.password.to_owned()).await.expect("Error hashing password");
     let ready_user = RegisterRequest {
@@ -42,6 +42,18 @@ async fn register(new_user: Json<RegisterRequest>, db: Data<MongoRepo>) -> impl 
         role: new_user.role.to_owned(),
         age: new_user.age.to_owned()
     };
+
+    let verify_availability = get_user(
+        LoginRequest {
+        email: ready_user.email.to_owned(),
+        password: "".to_string()
+    }, db.clone()).await;
+
+    match verify_availability {
+        Ok(Some(_)) => return HttpResponse::Conflict().body("User already exists"),
+        error => error.expect("Error getting user")
+    };
+
     let register_detail = register_user(ready_user, db).await;
     match register_detail {
         Ok(doc) => {

@@ -44,6 +44,7 @@ pub async fn add_application_crud(new_app: Application, db: Data<MongoRepo>) -> 
     let new_doc = Application {
         id: None,
         user_id: new_app.user_id.clone(),
+        batch_id: new_app.batch_id.clone(),
         title: new_app.title.clone(),
         description: new_app.description.clone(),
         status: new_app.status.clone(),
@@ -65,8 +66,8 @@ pub async fn edit_application_crud(new_app: Application, app_id: String, db: Dat
     let filter = doc! {"_id": obj_id };
     let new_doc = doc! {
             "$set": {
-                "id": new_app.id,
                 "user_id": new_app.user_id,
+                "batch_id": new_app.batch_id,
                 "title": new_app.title,
                 "description": new_app.description,
                 "status": new_app.status,

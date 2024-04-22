@@ -57,6 +57,7 @@ async fn json_to_application(json: Json<Application>) -> Application {
     Application {
         id: None,
         user_id: json.user_id.to_owned(),
+        batch_id: json.batch_id.to_owned(),
         title: json.title.to_owned(),
         description: json.description.to_owned(),
         is_closed: json.is_closed,

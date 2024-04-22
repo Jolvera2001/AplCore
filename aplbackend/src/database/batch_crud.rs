@@ -53,3 +53,33 @@ pub async fn get_all_batches_crud(user_id: String, db: Data<MongoRepo>) -> Resul
         .expect("Error getting user batches");
     Ok(batch_vec)
 }
+
+pub async fn edit_batch_crud(updated_batch: Batch, id: String, db: Data<MongoRepo>) -> Result<UpdateResult, Error> {
+    let obj_id = ObjectId::parse_str(&id)?;
+    let filter = doc! { "_id": obj_id };
+    let new_doc = doc! {
+        "$set": {
+            "name": updated_batch.name.clone(),
+            "description": updated_batch.description.clone(),
+            },
+    };
+    let updated_batch = db
+        .batches_col
+        .update_one(filter, new_doc, None)
+        .await
+        .ok()
+        .expect("Error updating batch");
+    Ok(updated_batch)
+}
+
+pub async fn delete_batch_crud(batch_id: String, db: Data<MongoRepo>) -> Result<DeleteResult, Error> {
+    let obj_id = ObjectId::parse_str(&batch_id)?;
+    let query = doc! { "_id": obj_id };
+    let delete_detail = db
+        .batches_col
+        .delete_one(query, None)
+        .await
+        .ok()
+        .expect("Error deleting batch");
+    Ok(delete_detail)
+}

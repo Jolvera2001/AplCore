@@ -1,6 +1,7 @@
 pub mod user_controllers;
 mod application_controllers;
 pub mod jwt_controllers;
+pub mod batch_controller;
 
 pub use user_controllers::{
     add_user,
@@ -20,4 +21,12 @@ pub use application_controllers::{
 pub use jwt_controllers::{
     login,
     register
+};
+
+pub use batch_controller::{
+    get_batch,
+    get_batches,
+    add_batch,
+    edit_batch,
+    delete_batch
 };
