@@ -17,7 +17,7 @@ use actix_web_httpauth::extractors::bearer::BearerAuth;
 
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Claims {
+pub struct Claims {
     sub: String,
     exp: i64,
 }
