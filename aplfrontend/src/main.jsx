@@ -5,29 +5,37 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Root from './routes/Root.jsx'
+import Main from './layouts/Main.jsx'
+import Landing from './layouts/Landing.jsx'
+
 import Home from './routes/Home.jsx'
 import Register from './routes/Register.jsx'
 import AplProfile from './routes/Profile.jsx';
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Root />,
+    path: '/main',
+    element: <Main />,
     children:[
       {
-        path: '/home',
+        path: '/main/home',
         element: <Home />,
       },
       {
-        path: '/profile',
+        path: '/main/profile',
         element: <AplProfile />,
       },
     ],
   },
   {
-    path: '/register',
-    element: <Register />
+    path: '/',
+    element: <Landing />,
+    children: [
+      {
+        path: '/register',
+        element: <Register />,
+      },
+    ],
   }
 ])
 

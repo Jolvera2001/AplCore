@@ -17,7 +17,6 @@ import {
   Spacer,
   Heading,
   HStack,
-  Icon,
   Grid,
   GridItem,
   Link,
@@ -27,7 +26,7 @@ import {
 import AplCoreLogo from '../assets/AplCoreLogo.svg'
 import { Outlet, Link as ReactRouterLink } from 'react-router-dom';
 
-function Root() {
+function Main() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = React.useRef()
 
@@ -82,4 +81,4 @@ function Root() {
   )
 }
 
-export default Root
+export default Main
