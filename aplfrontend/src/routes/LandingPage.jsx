@@ -29,7 +29,7 @@ function LandingPage() {
                     <HStack mt={8}>
                         <Container maxW='4xl' p={5} textAlign='left'>
                             <Heading size='xl' my={2}>Application Tracking</Heading>
-                            <Heading size='lg' as='i' as='u' pl={5} my={2}>Simplified</Heading>
+                            <Heading size='lg' as='i' pl={5} my={2}>Simplified</Heading>
                             <Text fontSize='xl' mt={5} w='45%' my={5} pl={2}>AplCore aims to make your application process easier and simple. Whether you're searching for you next job or browsing, we aim to make it a smooth process.</Text>
                             <Button size='lg'>Register now!</Button>
                         </Container>
