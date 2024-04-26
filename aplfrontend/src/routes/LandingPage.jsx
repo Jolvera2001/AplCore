@@ -15,6 +15,10 @@ import {
     Stack,
     HStack,
     VStack,
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter
 } from '@chakra-ui/react';
 
 function LandingPage() {
@@ -31,6 +35,40 @@ function LandingPage() {
                         </Container>
                     </HStack>
                 </Box>
+                <Box w="100%" h='1/3' py={16} px={2}>
+                    <Grid>
+                        <GridItem row>
+                            <Card>
+                                <CardHeader>
+                                    <Heading size='md'>Easy to use</Heading>
+                                </CardHeader>
+                                <CardBody>
+                                    <Text>Simple and easy to use interface! Even if you have hundreds of applications, we make it easu for you to track them</Text>
+                                </CardBody>
+                            </Card>
+                        </GridItem>
+                        <GridItem>
+                            <Card>
+                                <CardHeader>
+                                    <Heading size='md'>Simply Add</Heading>
+                                </CardHeader>
+                                <CardBody>
+                                    <Text>Add a new application to track with a click of a button.</Text>
+                                </CardBody>
+                            </Card>
+                        </GridItem>
+                        <GridItem>
+                            <Card>
+                                <CardHeader>
+                                    <Heading size='md'>Filter easily</Heading>
+                                </CardHeader>
+                                <CardBody>
+                                    <Text>Look through all your application through different filters or search for what you named it</Text>
+                                </CardBody>
+                            </Card>
+                        </GridItem>
+                    </Grid>
+                </Box >
             </VStack>
         </>
     )
