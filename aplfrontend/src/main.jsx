@@ -11,18 +11,19 @@ import Landing from './layouts/Landing.jsx'
 import Home from './routes/Home.jsx'
 import Register from './routes/Register.jsx'
 import AplProfile from './routes/Profile.jsx';
+import LandingPage from './routes/LandingPage.jsx';
 
 const router = createBrowserRouter([
   {
-    path: '/main',
+    path: 'main',
     element: <Main />,
     children:[
       {
-        path: '/main/home',
+        path: 'home',
         element: <Home />,
       },
       {
-        path: '/main/profile',
+        path: 'profile',
         element: <AplProfile />,
       },
     ],
@@ -32,7 +33,12 @@ const router = createBrowserRouter([
     element: <Landing />,
     children: [
       {
-        path: '/register',
+        path: '/',
+        element: <LandingPage />,
+
+      },
+      {
+        path: 'register',
         element: <Register />,
       },
     ],

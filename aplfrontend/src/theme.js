@@ -1,9 +1,12 @@
-export default {
-    colors: {
-        aplGreen: "#cbe896",
-        aplWhite: "#fffffc",
-        aplBlack: "#04080f",
-        aplRed: "#f06e6e",
-        aplPurp: "#925e78",
-    }
-}
+import { extendTheme } from "@chakra-ui/react";
+import '@fontsource/open-sans'
+import '@fontsource/raleway'
+
+const theme = extendTheme({
+    fonts: {
+        heading: `'Raleway', sans-serif`,
+        body: `'Open Sans', sans-serif`,
+    },
+})
+
+export default theme;
