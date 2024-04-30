@@ -18,11 +18,11 @@ function Landing() {
                 <HStack spacing={8}>
                     <Heading size='lg'>AplCore</Heading>
                     <Spacer />
-                    <ChakraLink as={ReactRouterLink}>Home</ChakraLink>
-                    <ChakraLink as={ReactRouterLink}>About Us</ChakraLink>
-                    <ChakraLink as={ReactRouterLink}>Contact Us</ChakraLink>
-                    <ChakraLink as={ReactRouterLink} borderRadius='md' bg='teal' color='white' p={2}>Sign In</ChakraLink>
-                    <ChakraLink as={ReactRouterLink} borderRadius='md' bg='tomato' color='white' p={2}>Sign Up</ChakraLink>
+                    <ChakraLink as={ReactRouterLink} to="/">Home</ChakraLink>
+                    <ChakraLink as={ReactRouterLink} to="/about">About Us</ChakraLink>
+                    <ChakraLink as={ReactRouterLink} to="/contact">Contact Us</ChakraLink>
+                    <ChakraLink as={ReactRouterLink} borderRadius='md' bg='teal' color='white' p={2} to='/register'>Sign In</ChakraLink>
+                    <ChakraLink as={ReactRouterLink} borderRadius='md' bg='tomato' color='white' p={2} to='/register'>Sign Up</ChakraLink>
                 </HStack>
             </Box>
             <Box>

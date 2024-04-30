@@ -9,8 +9,11 @@ import Main from './layouts/Main.jsx'
 import Landing from './layouts/Landing.jsx'
 
 import Home from './routes/Main/Home.jsx'
-import Register from './routes/Landing/Register.jsx'
 import AplProfile from './routes/Main/Profile.jsx';
+
+import  Contact from './routes/Landing/Contact.jsx'
+import AboutUs from './routes/Landing/AboutUs.jsx';
+import Register from './routes/Landing/Register.jsx'
 import LandingPage from './routes/Landing/LandingPage.jsx';
 
 const router = createBrowserRouter([
@@ -40,6 +43,14 @@ const router = createBrowserRouter([
       {
         path: 'register',
         element: <Register />,
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
+      },
+      {
+        path: 'about',
+        element: <AboutUs />,
       },
     ],
   }

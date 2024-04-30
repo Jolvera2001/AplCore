@@ -44,10 +44,8 @@ function Main() {
           <DrawerHeader>Navigation</DrawerHeader>
           <DrawerBody>
             <Stack>
-              <ChakraLink as={ReactRouterLink} to='/home'>Home</ChakraLink>
-              <ChakraLink as={ReactRouterLink} to='/register'>Register</ChakraLink>
-              <ChakraLink as={ReactRouterLink} to='/addapl'>Add Application</ChakraLink>
-              <ChakraLink as={ReactRouterLink} to='/profile'>Profile</ChakraLink>
+              <ChakraLink as={ReactRouterLink} to='/main/home'>Home</ChakraLink>
+              <ChakraLink as={ReactRouterLink} to='/main/profile'>Profile</ChakraLink>
             </Stack>
           </DrawerBody>
           <DrawerFooter>
