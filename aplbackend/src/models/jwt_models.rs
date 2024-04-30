@@ -1,5 +1,3 @@
-use actix_web::{ web, HttpResponse, Responder, HttpRequest, post, web::Data, web::Json };
-use jsonwebtoken::{ encode, EncodingKey, Header };
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
