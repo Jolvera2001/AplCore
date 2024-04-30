@@ -8,10 +8,10 @@ import {
 import Main from './layouts/Main.jsx'
 import Landing from './layouts/Landing.jsx'
 
-import Home from './routes/Home.jsx'
-import Register from './routes/Register.jsx'
-import AplProfile from './routes/Profile.jsx';
-import LandingPage from './routes/LandingPage.jsx';
+import Home from './routes/Main/Home.jsx'
+import Register from './routes/Landing/Register.jsx'
+import AplProfile from './routes/Main/Profile.jsx';
+import LandingPage from './routes/Landing/LandingPage.jsx';
 
 const router = createBrowserRouter([
   {
